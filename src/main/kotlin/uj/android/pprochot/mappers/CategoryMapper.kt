@@ -1,7 +1,7 @@
 package uj.android.pprochot.mappers
 
-import uj.android.pprochot.models.dto.CategoryRequest
-import uj.android.pprochot.models.dto.CategoryResponse
+import uj.android.pprochot.models.dto.catalog.CategoryRequest
+import uj.android.pprochot.models.dto.catalog.CategoryResponse
 import uj.android.pprochot.models.entity.Category
 
 class CategoryMapper {

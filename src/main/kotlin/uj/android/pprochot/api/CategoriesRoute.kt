@@ -5,8 +5,7 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import kotlinx.coroutines.flow.callbackFlow
-import uj.android.pprochot.models.dto.CategoryRequest
+import uj.android.pprochot.models.dto.catalog.CategoryRequest
 import uj.android.pprochot.service.CategoryService
 
 fun Route.categoryRoute(categoryService: CategoryService) {

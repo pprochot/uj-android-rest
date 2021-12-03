@@ -1,4 +1,4 @@
-package uj.android.pprochot.models.dto
+package uj.android.pprochot.models.dto.catalog
 
 import kotlinx.serialization.Serializable
 
