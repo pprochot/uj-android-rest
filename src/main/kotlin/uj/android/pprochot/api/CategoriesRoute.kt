@@ -8,11 +8,11 @@ import io.ktor.routing.*
 import uj.android.pprochot.models.dto.catalog.CategoryRequest
 import uj.android.pprochot.service.CategoryService
 
-fun Route.categoryRoute(categoryService: CategoryService) {
+fun Route.categoriesRoute(categoryService: CategoryService) {
     route("/categories") {
         post {
             val category = call.receive<CategoryRequest>()
-            val response = categoryService.createCategory(category)
+            val response = categoryService.create(category)
             call.respond(response)
         }
 
@@ -29,12 +29,12 @@ fun Route.categoryRoute(categoryService: CategoryService) {
             put{
                 val id = call.parameters["id"]?.toInt()
                 val category = call.receive<CategoryRequest>()
-                call.respond(categoryService.updateCategory(id!!, category)) //todo null
+                call.respond(categoryService.update(id!!, category)) //todo null
             }
 
             delete {
                 val id = call.parameters["id"]?.toInt()
-                categoryService.deleteCategory(id!!) //todo null
+                categoryService.delete(id!!) //todo null
                 call.respond(HttpStatusCode.OK)
             }
         }

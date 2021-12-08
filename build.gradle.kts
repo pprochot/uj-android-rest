@@ -18,7 +18,6 @@ repositories {
 }
 
 dependencies {
-
     implementation("org.jetbrains.exposed:exposed:0.17.14")
     implementation("com.zaxxer:HikariCP:5.0.0")
     implementation("org.postgresql:postgresql:42.3.1")
@@ -29,6 +28,7 @@ dependencies {
     implementation("io.ktor:ktor-server-core:1.6.4")
     implementation("io.ktor:ktor-jackson:1.6.4")
     implementation("ch.qos.logback:logback-classic:1.3.0-alpha10")
+    implementation("org.mindrot:jbcrypt:0.4")
 
     testImplementation(kotlin("test"))
 }

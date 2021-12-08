@@ -10,6 +10,7 @@ class Order(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<Order>(OrdersTable)
 
     var products by Product via OrdersProductTable
-    var buyer by User referencedOn OrdersTable.buyerId
+    var customer by User referencedOn OrdersTable.customerId
     var date by OrdersTable.date
+    var cost by OrdersTable.cost
 }

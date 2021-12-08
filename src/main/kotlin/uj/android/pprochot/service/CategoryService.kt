@@ -8,9 +8,9 @@ import uj.android.pprochot.models.dto.catalog.CategoryResponse
 import uj.android.pprochot.models.dto.ListResponse
 import uj.android.pprochot.models.entity.Category
 
-class CategoryService(private val categoryMapper: CategoryMapper) {
+class CategoryService(private val categoryMapper: CategoryMapper) : CrudService<CategoryRequest, CategoryResponse> {
 
-    fun createCategory(request: CategoryRequest): CategoryResponse = transaction {
+    override fun create(request: CategoryRequest): CategoryResponse = transaction {
         val category = Category.new {
             name = request.name
             description = request.description
@@ -18,20 +18,20 @@ class CategoryService(private val categoryMapper: CategoryMapper) {
         return@transaction CategoryResponse(category.id.value, category.name, category.description)
     }
 
-    fun getAll(): ListResponse<CategoryResponse> = transaction {
+    override fun getAll(): ListResponse<CategoryResponse> = transaction {
         val categories = Category.all()
             .map(categoryMapper::toResponse)
             .toList()
         return@transaction ListResponse(categories)
     }
 
-    fun getById(id: Int): CategoryResponse = transaction {
+    override fun getById(id: Int): CategoryResponse = transaction {
         val category = Category.findById(id)
             ?: throw ResourceNotFoundException("Catalog with id $id not found")
         return@transaction categoryMapper.toResponse(category)
     }
 
-    fun updateCategory(id: Int, request: CategoryRequest): CategoryResponse = transaction {
+    override fun update(id: Int, request: CategoryRequest): CategoryResponse = transaction {
         val category = Category.findById(id)
             ?: throw ResourceNotFoundException("Catalog with id $id not found")
         category.apply {
@@ -41,7 +41,7 @@ class CategoryService(private val categoryMapper: CategoryMapper) {
         return@transaction categoryMapper.toResponse(category)
     }
 
-    fun deleteCategory(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         val category = Category.findById(id)
             ?: throw ResourceNotFoundException("Catalog with id $id not found")
         category.delete()
