@@ -6,7 +6,6 @@ import java.math.BigDecimal
 
 @Serializable
 data class ProductRequest(
-    val id: Int,
     val name: String,
     val description: String,
     val cost: @Contextual BigDecimal,

@@ -13,8 +13,6 @@ import uj.android.pprochot.models.tables.UsersTable
 
 class UserService(private val userMapper: UserMapper) : CrudService<UserRequest, UserResponse> {
 
-    // Todo UserService needs special logic
-
     override fun create(request: UserRequest): UserResponse = transaction {
         val isEmpty = User.find { UsersTable.name eq request.name }.empty()
         if (!isEmpty)
@@ -40,10 +38,21 @@ class UserService(private val userMapper: UserMapper) : CrudService<UserRequest,
     }
 
     override fun update(id: Int, request: UserRequest): UserResponse = transaction {
-        TODO("Not yet implemented")
+        val user = User.findById(id)
+            ?: throw ResourceNotFoundException("User with id $id not found")
+        val isEmpty = User.find { UsersTable.name eq request.name }.empty()
+        if (!isEmpty)
+            throw UserAlreadyExistsException(request.name)
+       user.apply {
+            name = request.name
+            password = BCrypt.hashpw(request.password, BCrypt.gensalt())
+        }
+        return@transaction userMapper.toResponse(user)
     }
 
-    override fun delete(id: Int) {
-        TODO("Not yet implemented")
+    override fun delete(id: Int) = transaction {
+        val user = User.findById(id)
+            ?: throw ResourceNotFoundException("User with id $id not found")
+        user.delete()
     }
 }

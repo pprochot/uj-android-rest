@@ -6,5 +6,3 @@ object OrdersProductTable : Table("OrdersProductTable") {
     val orderId = reference("orderId", OrdersTable).primaryKey()
     val productId = reference("productId", ProductsTable).primaryKey()
 }
-
-//TODO set on delete!!!@!#

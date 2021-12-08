@@ -21,10 +21,10 @@ class OrderService(private val orderMapper: OrderMapper) : CrudService<OrderRequ
         val products = Product.find { ProductsTable.id inList request.products }
         val order = Order.new {
             customer = user
-            this.products = products
             cost = products.map(Product::cost).reduce(BigDecimal::add)
             date = DateTime.now()
         }
+        order.products = products
         return@transaction orderMapper.toResponse(order)
     }
 
@@ -46,10 +46,10 @@ class OrderService(private val orderMapper: OrderMapper) : CrudService<OrderRequ
         val products = Product.find { ProductsTable.id inList request.products }
         order.apply {
             customer = user
-            this.products = products
             cost = products.map(Product::cost).reduce(BigDecimal::add)
             date = DateTime.now()
         }
+        order.products = products
         return@transaction orderMapper.toResponse(order)
     }
 

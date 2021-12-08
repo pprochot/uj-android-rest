@@ -20,8 +20,8 @@ class CartService(private val cartMapper: CartMapper) : CrudService<CartRequest,
         val products = Product.find { ProductsTable.id inList request.products }
         val cart = Cart.new {
             owner = user
-            this.products = products
         }
+        cart.products = products
         return@transaction cartMapper.toResponse(cart)
     }
 
@@ -43,8 +43,8 @@ class CartService(private val cartMapper: CartMapper) : CrudService<CartRequest,
         val products = Product.find { ProductsTable.id inList request.products }
         cart.apply {
             owner = user
-            this.products = products
         }
+        cart.products = products
         return@transaction cartMapper.toResponse(cart)
     }
 

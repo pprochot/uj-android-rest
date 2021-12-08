@@ -29,6 +29,7 @@ dependencies {
     implementation("io.ktor:ktor-jackson:1.6.4")
     implementation("ch.qos.logback:logback-classic:1.3.0-alpha10")
     implementation("org.mindrot:jbcrypt:0.4")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-joda:2.12.3")
 
     testImplementation(kotlin("test"))
 }

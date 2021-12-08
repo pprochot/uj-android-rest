@@ -10,10 +10,10 @@ import uj.android.pprochot.models.tables.*
 class DatabaseConfig {
 
     private val hikariConfig = HikariConfig().apply {
-        jdbcUrl = "jdbc:postgresql://localhost:8001/shop"
+        jdbcUrl = "jdbc:postgresql://localhost:5432/postgres"
         driverClassName = "org.postgresql.Driver"
         username = "shop_app"
-        password = "shopapp123"
+        password = "shop"
     }
 
     val database = Database.connect(HikariDataSource(hikariConfig))

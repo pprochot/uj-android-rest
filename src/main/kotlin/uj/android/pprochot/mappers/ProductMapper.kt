@@ -11,6 +11,7 @@ class ProductMapper {
             product.id.value,
             product.name,
             product.description,
+            product.cost,
             CategoryResponse(category.id.value, category.name, category.description)
         )
     }
