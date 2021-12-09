@@ -40,9 +40,6 @@ class UserService(private val userMapper: UserMapper) : CrudService<UserRequest,
     override fun update(id: Int, request: UserRequest): UserResponse = transaction {
         val user = User.findById(id)
             ?: throw ResourceNotFoundException("User with id $id not found")
-        val isEmpty = User.find { UsersTable.name eq request.name }.empty()
-        if (!isEmpty)
-            throw UserAlreadyExistsException(request.name)
        user.apply {
             name = request.name
             password = BCrypt.hashpw(request.password, BCrypt.gensalt())

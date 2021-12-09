@@ -23,7 +23,6 @@ fun main() {
         install(ContentNegotiation) {
             jackson {
                 enable(SerializationFeature.INDENT_OUTPUT)
-                val module = SimpleModule()
                 registerModule(JodaModule())
             }
         }
@@ -36,11 +35,11 @@ fun main() {
         val orderMapper = OrderMapper(userMapper, productMapper)
 
         routing {
-            usersRoute(UserService(userMapper))
-            productRoutes(ProductService(productMapper))
-            categoriesRoute(CategoryService(categoryMapper))
-            cartRoutes(CartService(cartMapper))
-            orderRoutes(OrderService(orderMapper))
+            genericCrudRoute("/users", UserService(userMapper))
+            genericCrudRoute("/products", ProductService(productMapper))
+            genericCrudRoute("/categories", CategoryService(categoryMapper))
+            genericCrudRoute("/carts", CartService(cartMapper))
+            genericCrudRoute("/orders", OrderService(orderMapper))
         }
     }.start(wait = true)
 }

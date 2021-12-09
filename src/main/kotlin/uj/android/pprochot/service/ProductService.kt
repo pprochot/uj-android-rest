@@ -1,7 +1,6 @@
 package uj.android.pprochot.service
 
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.transactions.transactionScope
 import uj.android.pprochot.exceptions.ResourceNotFoundException
 import uj.android.pprochot.mappers.ProductMapper
 import uj.android.pprochot.models.dto.ListResponse

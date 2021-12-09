@@ -1,6 +1,7 @@
 package uj.android.pprochot.service
 
 import org.jetbrains.exposed.sql.transactions.transaction
+import uj.android.pprochot.exceptions.ProductListException
 import uj.android.pprochot.exceptions.ResourceNotFoundException
 import uj.android.pprochot.mappers.CartMapper
 import uj.android.pprochot.models.dto.ListResponse
@@ -18,6 +19,8 @@ class CartService(private val cartMapper: CartMapper) : CrudService<CartRequest,
         val user = User.findById(request.ownerId)
             ?: throw ResourceNotFoundException("User with id ${request.ownerId} not found")
         val products = Product.find { ProductsTable.id inList request.products }
+        if (products.count() != request.products.size)
+            throw ProductListException("List contains not existing products!")
         val cart = Cart.new {
             owner = user
         }
@@ -36,11 +39,13 @@ class CartService(private val cartMapper: CartMapper) : CrudService<CartRequest,
     }
 
     override fun update(id: Int, request: CartRequest): CartResponse = transaction {
-        val cart = Cart.findById(request.ownerId)
-            ?: throw ResourceNotFoundException("Cart with id ${request.ownerId} not found")
+        val cart = Cart.findById(id)
+            ?: throw ResourceNotFoundException("Cart with id $id not found")
         val user = User.findById(request.ownerId)
             ?: throw ResourceNotFoundException("User with id ${request.ownerId} not found")
         val products = Product.find { ProductsTable.id inList request.products }
+        if (products.count() != request.products.size)
+            throw ProductListException("List contains not existing products!")
         cart.apply {
             owner = user
         }

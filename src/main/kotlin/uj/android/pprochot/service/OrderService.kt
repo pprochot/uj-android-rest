@@ -2,6 +2,7 @@ package uj.android.pprochot.service
 
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
+import uj.android.pprochot.exceptions.ProductListException
 import uj.android.pprochot.exceptions.ResourceNotFoundException
 import uj.android.pprochot.mappers.OrderMapper
 import uj.android.pprochot.models.dto.ListResponse
@@ -16,9 +17,13 @@ import java.math.BigDecimal
 class OrderService(private val orderMapper: OrderMapper) : CrudService<OrderRequest, OrderResponse> {
 
     override fun create(request: OrderRequest): OrderResponse = transaction {
+        if (request.products.isEmpty())
+            throw ProductListException("Need at least one product!")
         val user = User.findById(request.customerId)
             ?: throw ResourceNotFoundException("User with id ${request.customerId} not found")
         val products = Product.find { ProductsTable.id inList request.products }
+        if (products.count() != request.products.size)
+            throw ProductListException("List contains not existing products!")
         val order = Order.new {
             customer = user
             cost = products.map(Product::cost).reduce(BigDecimal::add)
@@ -39,11 +44,15 @@ class OrderService(private val orderMapper: OrderMapper) : CrudService<OrderRequ
     }
 
     override fun update(id: Int, request: OrderRequest): OrderResponse = transaction {
-        val order = Order.findById(request.customerId)
-            ?: throw ResourceNotFoundException("Order with id ${request.customerId} not found")
+        if (request.products.isEmpty())
+            throw ProductListException("Need at least one product!")
+        val order = Order.findById(id)
+            ?: throw ResourceNotFoundException("Order with id $id not found")
         val user = User.findById(request.customerId)
             ?: throw ResourceNotFoundException("User with id ${request.customerId} not found")
         val products = Product.find { ProductsTable.id inList request.products }
+        if (products.count() != request.products.size)
+            throw ProductListException("List contains not existing products!")
         order.apply {
             customer = user
             cost = products.map(Product::cost).reduce(BigDecimal::add)
